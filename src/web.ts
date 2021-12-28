@@ -6,16 +6,11 @@ import http from 'isomorphic-git/http/web'
 import LightningFS from '@isomorphic-git/lightning-fs'
 
 
-const fs = new LightningFS("fs");
-const fsp = fs.promises;
+let fs = new LightningFS("fs");
+let fsp = fs.promises;
 const proxy_url = 'https://cors.isomorphic-git.org';
 
 export class NobeWeb extends WebPlugin implements NobePlugin {
-
-  async echo(options: { value: string }): Promise<{ value: string }> {
-    console.log('ECHO', options);
-    return options;
-  }
 
   async init(options: { url: string, workspace?: string, branch?: string }): Promise<{ is_success: boolean }> {
     let is_success = false;
@@ -63,19 +58,20 @@ export class NobeWeb extends WebPlugin implements NobePlugin {
     let is_success = false;
     try{
       console.log(`Switching to branch ${options.branch_name}...`);
+
+
+      fs = new LightningFS("fs", { wipe: true } as any);
+      fsp = fs.promises;
+
       Config.BRANCH = options.branch_name;
-      await git.checkout({
-        fs,
-        dir: Config.WORKSPACE,
-        ref: Config.BRANCH
+      await this.init({
+        url: Config.GIT_URL,
+        branch: Config.BRANCH,
+        workspace: Config.WORKSPACE
       });
-      const has_updates = await NobeWeb.checkUpdates();
-      if (has_updates) {
-        await NobeWeb.pull();
-      }
       is_success = true;
     }catch(e){
-      console.log(e, `failed to switch branch`)
+      console.log(e, `failed to switch branch`);
     }
     return {
       is_success: is_success

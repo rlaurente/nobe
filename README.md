@@ -2,6 +2,8 @@
 
 NOBackEnd - Build a full MVP app without Backend API.
 
+Demo, Docs will be publish soon
+
 ## Install
 
 ```bash
@@ -12,7 +14,6 @@ npm install @rlaurente/nobe
 
 <docgen-index>
 
-* [`echo(...)`](#echo)
 * [`init(...)`](#init)
 * [`switchBranch(...)`](#switchbranch)
 
@@ -20,21 +21,6 @@ npm install @rlaurente/nobe
 
 <docgen-api>
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
-
-### echo(...)
-
-```typescript
-echo(options: { value: string; }) => Promise<{ value: string; }>
-```
-
-| Param         | Type                            |
-| ------------- | ------------------------------- |
-| **`options`** | <code>{ value: string; }</code> |
-
-**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
-
---------------------
-
 
 ### init(...)
 
