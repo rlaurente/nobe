@@ -1,12 +1,11 @@
 # @rlaurente/nobe
 
-NOBackEnd - A library that will convert a frontend dev to fullstack dev without any knowledge in backend tech / languages. The fast way to create an MVP app without any server setup / cost.
+NOBackEnd - Build a full MVP app without Backend API.
 
 ## Install
 
 ```bash
 npm install @rlaurente/nobe
-npx cap sync
 ```
 
 ## API
@@ -15,6 +14,7 @@ npx cap sync
 
 * [`echo(...)`](#echo)
 * [`init(...)`](#init)
+* [`switchBranch(...)`](#switchbranch)
 
 </docgen-index>
 
@@ -39,12 +39,27 @@ echo(options: { value: string; }) => Promise<{ value: string; }>
 ### init(...)
 
 ```typescript
-init(options: { url: string; workspace?: string; }) => Promise<{ is_success: boolean; }>
+init(options: { url: string; workspace?: string; branch?: string; }) => Promise<{ is_success: boolean; }>
 ```
 
-| Param         | Type                                              |
-| ------------- | ------------------------------------------------- |
-| **`options`** | <code>{ url: string; workspace?: string; }</code> |
+| Param         | Type                                                               |
+| ------------- | ------------------------------------------------------------------ |
+| **`options`** | <code>{ url: string; workspace?: string; branch?: string; }</code> |
+
+**Returns:** <code>Promise&lt;{ is_success: boolean; }&gt;</code>
+
+--------------------
+
+
+### switchBranch(...)
+
+```typescript
+switchBranch(options: { branch_name: string; }) => Promise<{ is_success: boolean; }>
+```
+
+| Param         | Type                                  |
+| ------------- | ------------------------------------- |
+| **`options`** | <code>{ branch_name: string; }</code> |
 
 **Returns:** <code>Promise&lt;{ is_success: boolean; }&gt;</code>
 

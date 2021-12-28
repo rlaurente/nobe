@@ -1,17 +1,13 @@
 {
   "name": "@rlaurente/nobe",
   "version": "0.0.1",
-  "description": "NOBackEnd - A library that will convert a frontend dev to fullstack dev without any knowledge in backend tech / languages. The fast way to create an MVP app without any server setup / cost.",
+  "description": "NOBackEnd - Build a full MVP app without Backend API.",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "unpkg": "dist/plugin.js",
   "files": [
-    "android/src/main/",
-    "android/build.gradle",
-    "dist/",
-    "ios/Plugin/",
-    "RlaurenteNobe.podspec"
+    "dist/"
   ],
   "author": "Rhey Anthony Laurente",
   "license": "MIT",
@@ -23,17 +19,12 @@
     "url": "https://github.com/rlaurente/nobe.git/issues"
   },
   "keywords": [
-    "capacitor",
-    "plugin",
-    "native"
+    "nobe",
+    "nobackend",
+    "norest"
   ],
   "scripts": {
-    "verify": "npm run verify:ios && npm run verify:android && npm run verify:web",
-    "verify:ios": "cd ios && pod install && xcodebuild -workspace Plugin.xcworkspace -scheme Plugin && cd ..",
-    "verify:android": "cd android && ./gradlew clean build test && cd ..",
     "verify:web": "npm run build",
-    "lint": "npm run eslint && npm run prettier -- --check && npm run swiftlint -- lint",
-    "fmt": "npm run eslint -- --fix && npm run prettier -- --write && npm run swiftlint -- --fix --format",
     "eslint": "eslint . --ext ts",
     "prettier": "prettier \"**/*.{css,html,ts,js,java}\"",
     "swiftlint": "node-swiftlint",
@@ -44,10 +35,8 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@capacitor/android": "^3.0.0",
     "@capacitor/core": "^3.0.0",
     "@capacitor/docgen": "^0.0.18",
-    "@capacitor/ios": "^3.0.0",
     "@ionic/eslint-config": "^0.3.0",
     "@ionic/prettier-config": "^1.0.1",
     "@ionic/swiftlint-config": "^1.1.2",
@@ -63,17 +52,8 @@
     "@capacitor/core": "^3.0.0"
   },
   "prettier": "@ionic/prettier-config",
-  "swiftlint": "@ionic/swiftlint-config",
   "eslintConfig": {
     "extends": "@ionic/eslint-config/recommended"
-  },
-  "capacitor": {
-    "ios": {
-      "src": "ios"
-    },
-    "android": {
-      "src": "android"
-    }
   },
   "dependencies": {
     "@isomorphic-git/lightning-fs": "^4.4.1",
