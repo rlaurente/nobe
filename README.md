@@ -14,6 +14,7 @@ npx cap sync
 <docgen-index>
 
 * [`echo(...)`](#echo)
+* [`init(...)`](#init)
 
 </docgen-index>
 
@@ -31,6 +32,21 @@ echo(options: { value: string; }) => Promise<{ value: string; }>
 | **`options`** | <code>{ value: string; }</code> |
 
 **Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+
+--------------------
+
+
+### init(...)
+
+```typescript
+init(options: { url: string; workspace?: string; }) => Promise<{ is_success: boolean; }>
+```
+
+| Param         | Type                                              |
+| ------------- | ------------------------------------------------- |
+| **`options`** | <code>{ url: string; workspace?: string; }</code> |
+
+**Returns:** <code>Promise&lt;{ is_success: boolean; }&gt;</code>
 
 --------------------
 

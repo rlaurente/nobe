@@ -74,5 +74,10 @@
     "android": {
       "src": "android"
     }
+  },
+  "dependencies": {
+    "@isomorphic-git/lightning-fs": "^4.4.1",
+    "@types/isomorphic-git__lightning-fs": "^4.4.2",
+    "isomorphic-git": "^1.10.3"
   }
 }
