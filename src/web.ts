@@ -1,50 +1,59 @@
 import { WebPlugin } from '@capacitor/core';
 import type { NobePlugin } from './definitions';
 import { Config } from './config';
-import git from 'isomorphic-git'
-import http from 'isomorphic-git/http/web'
-import LightningFS from '@isomorphic-git/lightning-fs'
+import { Repository } from './libs/repository';
+import { Database } from './libs/database';
 
-
-let fs = new LightningFS("fs");
-let fsp = fs.promises;
-const proxy_url = 'https://cors.isomorphic-git.org';
+interface InitOptions {
+  url: string
+  , workspace?: string
+  , branch?: string
+  , wipe?: boolean
+}
 
 export class NobeWeb extends WebPlugin implements NobePlugin {
 
-  async init(options: { url: string, workspace?: string, branch?: string }): Promise<{ is_success: boolean }> {
+  private fsp: any;
+  public repo: any;
+
+  async init(options: InitOptions): Promise<{ is_success: boolean }> {
     let is_success = false;
     Config.GIT_URL = options.url;
     if (options.workspace) {
       Config.WORKSPACE = options.workspace;
     }
 
-    if(options.branch){
+    if (options.branch) {
       Config.BRANCH = options.branch;
     }
 
+    const repo = new Repository();
+    this.fsp = repo.fsp;
+    this.repo = repo;
+
     const dir = Config.WORKSPACE;
+
     let has_git = false;
     try {
-      const files = await fsp.readdir(dir);
-      if (files.indexOf('.git') > -1) {
+      const files = await this.fsp.readdir(dir);
+      if (files && files.indexOf('.git') > -1) {
         has_git = true;
       }
     } catch (e) {
-      await fsp.mkdir(dir);
+      await this.fsp.mkdir(dir);
     }
 
     if (!has_git) {
-      try{
-        await NobeWeb.clone();
+      try {
+        await repo.clone();
         is_success = true;
-      }catch(e){
-        console.log(`clone failed`, e); 
+      } catch (e) {
+        console.log(`clone failed`, e);
       }
     } else {
-      const has_updates = await NobeWeb.checkUpdates();
+      const has_updates = await repo.checkUpdates();
       if (has_updates) {
-        await NobeWeb.pull();
+        await repo.pull();
       }
       is_success = true;
     }
@@ -54,23 +63,19 @@ export class NobeWeb extends WebPlugin implements NobePlugin {
     }
   }
 
-  async switchBranch(options: {branch_name: string}): Promise<{ is_success: boolean}> {
+  async switchBranch(options: { branch_name: string }): Promise<{ is_success: boolean }> {
     let is_success = false;
-    try{
+    try {
       console.log(`Switching to branch ${options.branch_name}...`);
-
-
-      fs = new LightningFS("fs", { wipe: true } as any);
-      fsp = fs.promises;
-
       Config.BRANCH = options.branch_name;
       await this.init({
         url: Config.GIT_URL,
         branch: Config.BRANCH,
-        workspace: Config.WORKSPACE
+        workspace: Config.WORKSPACE,
+        wipe: true
       });
       is_success = true;
-    }catch(e){
+    } catch (e) {
       console.log(e, `failed to switch branch`);
     }
     return {
@@ -78,67 +83,19 @@ export class NobeWeb extends WebPlugin implements NobePlugin {
     }
   }
 
-  private static async checkUpdates(): Promise<Boolean> {
-    console.log(`Checking updates...`);
-    let has_updates = false;
-    const local_refs = await git.log({
-      fs,
-      dir: Config.WORKSPACE,
-      depth: 1,
-      ref: Config.BRANCH
-    })
-    if (local_refs && local_refs.length > 0) {
-      const local_oid = local_refs[0].oid;
-
-      const remote_refs = await git.listServerRefs({
-        url: Config.GIT_URL,
-        http,
-        corsProxy: proxy_url,
-        prefix: `refs/heads/${Config.BRANCH}`,
-        symrefs: true,
-      });
-
-      if (remote_refs && remote_refs.length > 0) {
-        const remote_oid = remote_refs[0].oid;
-        if (remote_oid != local_oid) {
-          has_updates = true;
-        }
-      }
-    }
-    if(has_updates){
-      console.log(`Updates detected`);
-    }else{
-      console.log(`Up to date`);
-    }
-    return has_updates;
-  }
-
-  private static async clone() {
-    console.log(`Cloning...`);
-    const result = await git.clone({
-      url: Config.GIT_URL,
-      corsProxy: proxy_url,
-      fs,
-      http,
-      ref: Config.BRANCH,
-      singleBranch: true,
-      depth: 1,
-      dir: Config.WORKSPACE
-    });
+  async get(options: { key: string; }): Promise<any> {
+    const db = new Database(this.fsp);
+    const result = await db.get(options.key);
     return result;
   }
 
-  private static async pull() {
-    console.log(`Pulling updates...`);
-    const result = await git.fastForward({
-      fs,
-      http,
-      dir: Config.WORKSPACE,
-      ref: Config.BRANCH
-    });
-    console.log('Done pulling!')
+  async set(options: { key: string; data: any; }): Promise<boolean> {
+    const db = new Database(this.fsp);
+    const result = await db.set(options.key, options.data);
     return result;
   }
 
-
+  async apply(): Promise<boolean> {
+    return await this.repo.push();
+  }
 }

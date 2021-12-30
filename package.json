@@ -1,6 +1,6 @@
 {
   "name": "@rlaurente/nobe",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "NOBackEnd - Build a full MVP app without Backend API.",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -58,6 +58,7 @@
   "dependencies": {
     "@isomorphic-git/lightning-fs": "^4.4.1",
     "@types/isomorphic-git__lightning-fs": "^4.4.2",
-    "isomorphic-git": "^1.10.3"
+    "browserfs": "^1.4.3",
+    "isomorphic-git": "1.9.0"
   }
 }
