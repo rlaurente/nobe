@@ -16,6 +16,9 @@ npm install @rlaurente/nobe
 
 * [`init(...)`](#init)
 * [`switchBranch(...)`](#switchbranch)
+* [`get(...)`](#get)
+* [`set(...)`](#set)
+* [`apply()`](#apply)
 
 </docgen-index>
 
@@ -48,6 +51,47 @@ switchBranch(options: { branch_name: string; }) => Promise<{ is_success: boolean
 | **`options`** | <code>{ branch_name: string; }</code> |
 
 **Returns:** <code>Promise&lt;{ is_success: boolean; }&gt;</code>
+
+--------------------
+
+
+### get(...)
+
+```typescript
+get(options: { key: string; }) => Promise<any>
+```
+
+| Param         | Type                          |
+| ------------- | ----------------------------- |
+| **`options`** | <code>{ key: string; }</code> |
+
+**Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
+### set(...)
+
+```typescript
+set(options: { key: string; data: any; }) => Promise<boolean>
+```
+
+| Param         | Type                                     |
+| ------------- | ---------------------------------------- |
+| **`options`** | <code>{ key: string; data: any; }</code> |
+
+**Returns:** <code>Promise&lt;boolean&gt;</code>
+
+--------------------
+
+
+### apply()
+
+```typescript
+apply() => Promise<boolean>
+```
+
+**Returns:** <code>Promise&lt;boolean&gt;</code>
 
 --------------------
 

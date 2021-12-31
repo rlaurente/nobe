@@ -1,6 +1,6 @@
 {
   "name": "@rlaurente/nobe",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "NOBackEnd - Build a full MVP app without Backend API.",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -40,6 +40,7 @@
     "@ionic/eslint-config": "^0.3.0",
     "@ionic/prettier-config": "^1.0.1",
     "@ionic/swiftlint-config": "^1.1.2",
+    "@types/underscore": "^1.11.4",
     "eslint": "^7.11.0",
     "prettier": "~2.2.0",
     "prettier-plugin-java": "~1.0.0",
@@ -59,6 +60,7 @@
     "@isomorphic-git/lightning-fs": "^4.4.1",
     "@types/isomorphic-git__lightning-fs": "^4.4.2",
     "browserfs": "^1.4.3",
-    "isomorphic-git": "1.9.0"
+    "isomorphic-git": "^1.10.3",
+    "underscore": "^1.13.2"
   }
 }

@@ -1,22 +1,22 @@
 import { WebPlugin } from '@capacitor/core';
-import type { NobePlugin } from './definitions';
+import type { NobePlugin} from './definitions';
 import { Config } from './config';
 import { Repository } from './libs/repository';
 import { Database } from './libs/database';
+import { findWhere, findIndex } from 'underscore';
 
-interface InitOptions {
-  url: string
-  , workspace?: string
-  , branch?: string
-  , wipe?: boolean
-}
+interface MockRequestMap {
+  path: string,
+  handler: any
+};
 
 export class NobeWeb extends WebPlugin implements NobePlugin {
 
   private fsp: any;
-  public repo: any;
+  private repo: any;
+  private is_mock: boolean = true;
 
-  async init(options: InitOptions): Promise<{ is_success: boolean }> {
+  async init(options: { url: string, workspace?: string, branch?: string, wipe?: boolean}): Promise<{ is_success: boolean }> {
     let is_success = false;
     Config.GIT_URL = options.url;
     if (options.workspace) {
@@ -84,18 +84,49 @@ export class NobeWeb extends WebPlugin implements NobePlugin {
   }
 
   async get(options: { key: string; }): Promise<any> {
-    const db = new Database(this.fsp);
+    const db = new Database();
+    db.fsp = this.fsp;
     const result = await db.get(options.key);
     return result;
   }
 
   async set(options: { key: string; data: any; }): Promise<boolean> {
-    const db = new Database(this.fsp);
+    const db = new Database();
+    db.fsp = this.fsp;
     const result = await db.set(options.key, options.data);
     return result;
   }
 
   async apply(): Promise<boolean> {
-    return await this.repo.push();
+    return this.repo.push();
   }
+
+  async request(options: { path: string, type: string, data?: any, headers?: any}): Promise<any> {
+    if (this.is_mock) {
+      const mock = findWhere(Config.MOCKS, {
+        path: options.path
+      });
+      if(mock){
+        const result = await mock.handler(options.data);
+        return result;
+      }else{
+        throw `Mock doesn't exists for ${options.path}`;
+      }
+    }else{
+      throw `No api implementations yet!`
+    }
+  }
+
+  mock(options: { path: string; handler: any; }): void {
+    const index = findIndex(Config.MOCKS, (item: MockRequestMap)=>{
+      return item.path === options.path;
+    });
+    if(index > -1){
+      Config.MOCKS[index] = options;
+    }else{
+      Config.MOCKS.push(options);
+    }
+  }
+
+
 }

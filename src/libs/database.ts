@@ -5,26 +5,25 @@ export class Database {
     public fsp: any;
     public base_dir: string;
 
-    constructor(private _fsp: any) {
-        this.fsp = _fsp;
+    constructor() {
         this.base_dir = `${Config.WORKSPACE}/db`;
-        this.init();
     }
 
-    async init() {
+    async autoCreateBase() {
         try {
             const files = await this.fsp.readdir(this.base_dir);
             if (files) {
                 Misc.log(`db folder exists!`)
             }
         } catch (e) {
-            Misc.log(`db folder exists, skipping...`, e)
+            Misc.log(`db folder doesn't exists, skipping...`, e);
             await this.fsp.mkdir(this.base_dir);
         }
     }
 
     async get(path: string): Promise<any> {
         try {
+            await this.autoCreateBase();
             const folder = `${this.base_dir}`;
             const _path = `${folder}/${path}.json`;
             const file = await this.fsp.readFile(_path);
@@ -38,6 +37,7 @@ export class Database {
     async set(path: string, data: any): Promise<boolean> {
         let is_success = false;
         const folder = `${this.base_dir}`;
+        await this.autoCreateBase();
         try {
             await this.fsp.mkdir(folder, { recursive: true });
         } catch (e) {

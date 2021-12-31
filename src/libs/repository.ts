@@ -68,6 +68,10 @@ export class Repository {
         const result = await git.pull({
             fs: this.fs,
             http,
+            author: {
+                name: 'Nobe Client',
+                email: 'nobeclient@gmail.com',
+            },
             dir: Config.WORKSPACE,
             ref: Config.BRANCH
         });
