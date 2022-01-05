@@ -18,6 +18,8 @@ npm install @rlaurente/nobe
 * [`switchBranch(...)`](#switchbranch)
 * [`get(...)`](#get)
 * [`set(...)`](#set)
+* [`request(...)`](#request)
+* [`mock(...)`](#mock)
 * [`apply()`](#apply)
 
 </docgen-index>
@@ -28,12 +30,12 @@ npm install @rlaurente/nobe
 ### init(...)
 
 ```typescript
-init(options: { url: string; workspace?: string; branch?: string; }) => Promise<{ is_success: boolean; }>
+init(options: { url: string; workspace?: string; branch?: string; wipe?: boolean; }) => Promise<{ is_success: boolean; }>
 ```
 
-| Param         | Type                                                               |
-| ------------- | ------------------------------------------------------------------ |
-| **`options`** | <code>{ url: string; workspace?: string; branch?: string; }</code> |
+| Param         | Type                                                                               |
+| ------------- | ---------------------------------------------------------------------------------- |
+| **`options`** | <code>{ url: string; workspace?: string; branch?: string; wipe?: boolean; }</code> |
 
 **Returns:** <code>Promise&lt;{ is_success: boolean; }&gt;</code>
 
@@ -81,6 +83,34 @@ set(options: { key: string; data: any; }) => Promise<boolean>
 | **`options`** | <code>{ key: string; data: any; }</code> |
 
 **Returns:** <code>Promise&lt;boolean&gt;</code>
+
+--------------------
+
+
+### request(...)
+
+```typescript
+request(options: { path: string; type: string; data?: any; headers?: any; }) => Promise<any>
+```
+
+| Param         | Type                                                                    |
+| ------------- | ----------------------------------------------------------------------- |
+| **`options`** | <code>{ path: string; type: string; data?: any; headers?: any; }</code> |
+
+**Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
+### mock(...)
+
+```typescript
+mock(options: { path: string; handler: any; }) => void
+```
+
+| Param         | Type                                         |
+| ------------- | -------------------------------------------- |
+| **`options`** | <code>{ path: string; handler: any; }</code> |
 
 --------------------
 

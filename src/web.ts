@@ -1,12 +1,13 @@
 import { WebPlugin } from '@capacitor/core';
-import type { NobePlugin} from './definitions';
+import type { NobePlugin } from './definitions';
 import { Config } from './config';
 import { Repository } from './libs/repository';
 import { Database } from './libs/database';
 import { findWhere, findIndex } from 'underscore';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 interface MockRequestMap {
-  path: string,
+  url: string,
   handler: any
 };
 
@@ -14,11 +15,15 @@ export class NobeWeb extends WebPlugin implements NobePlugin {
 
   private fsp: any;
   private repo: any;
-  private is_mock: boolean = true;
 
-  async init(options: { url: string, workspace?: string, branch?: string, wipe?: boolean}): Promise<{ is_success: boolean }> {
+  setConfig(options: { is_mock: boolean; is_debug: boolean; }): void {
+    Config.IS_DEBUG = options.is_debug;
+    Config.IS_MOCK = options.is_mock;
+  }
+
+  async init(options: { git_url: string, workspace?: string, branch?: string, wipe?: boolean }): Promise<{ is_success: boolean }> {
     let is_success = false;
-    Config.GIT_URL = options.url;
+    Config.GIT_URL = options.git_url;
     if (options.workspace) {
       Config.WORKSPACE = options.workspace;
     }
@@ -69,7 +74,7 @@ export class NobeWeb extends WebPlugin implements NobePlugin {
       console.log(`Switching to branch ${options.branch_name}...`);
       Config.BRANCH = options.branch_name;
       await this.init({
-        url: Config.GIT_URL,
+        git_url: Config.GIT_URL,
         branch: Config.BRANCH,
         workspace: Config.WORKSPACE,
         wipe: true
@@ -101,29 +106,29 @@ export class NobeWeb extends WebPlugin implements NobePlugin {
     return this.repo.push();
   }
 
-  async request(options: { path: string, type: string, data?: any, headers?: any}): Promise<any> {
-    if (this.is_mock) {
+  async request(options: AxiosRequestConfig): Promise<AxiosResponse> {
+    if (Config.IS_MOCK) {
       const mock = findWhere(Config.MOCKS, {
-        path: options.path
+        url: options.url
       });
-      if(mock){
+      if (mock) {
         const result = await mock.handler(options.data);
         return result;
-      }else{
-        throw `Mock doesn't exists for ${options.path}`;
+      } else {
+        throw `Mock doesn't exists for ${options.url}`;
       }
-    }else{
-      throw `No api implementations yet!`
+    } else {
+      return axios(options);
     }
   }
 
-  mock(options: { path: string; handler: any; }): void {
-    const index = findIndex(Config.MOCKS, (item: MockRequestMap)=>{
-      return item.path === options.path;
+  mock(options: { url: string; handler: any; }): void {
+    const index = findIndex(Config.MOCKS, (item: MockRequestMap) => {
+      return item.url == options.url;
     });
-    if(index > -1){
+    if (index > -1) {
       Config.MOCKS[index] = options;
-    }else{
+    } else {
       Config.MOCKS.push(options);
     }
   }

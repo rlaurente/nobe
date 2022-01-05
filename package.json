@@ -59,8 +59,9 @@
   "dependencies": {
     "@isomorphic-git/lightning-fs": "^4.4.1",
     "@types/isomorphic-git__lightning-fs": "^4.4.2",
+    "axios": "^0.24.0",
     "browserfs": "^1.4.3",
-    "isomorphic-git": "^1.10.3",
+    "isomorphic-git": "file:../isomorphic-git",
     "underscore": "^1.13.2"
   }
 }
