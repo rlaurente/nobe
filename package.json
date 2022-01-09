@@ -1,6 +1,6 @@
 {
   "name": "@rlaurente/nobe",
-  "version": "0.0.6-beta",
+  "version": "0.0.7-beta",
   "description": "NOBackEnd - Build a full MVP app without Backend API.",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -21,22 +21,17 @@
   "keywords": [
     "nobe",
     "nobackend",
-    "norest"
+    "norest",
+    "api",
+    "mocking"
   ],
   "scripts": {
-    "verify:web": "npm run build",
     "eslint": "eslint . --ext ts",
-    "prettier": "prettier \"**/*.{css,html,ts,js,java}\"",
-    "swiftlint": "node-swiftlint",
-    "docgen": "docgen --api NobePlugin --output-readme README.md --output-json dist/docs.json",
-    "build": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.js",
+    "build": "npm run clean && tsc",
     "clean": "rimraf ./dist",
-    "watch": "tsc --watch",
-    "prepublishOnly": "npm run build"
+    "watch": "tsc --watch"
   },
   "devDependencies": {
-    "@capacitor/core": "^3.0.0",
-    "@capacitor/docgen": "^0.0.18",
     "@ionic/eslint-config": "^0.3.0",
     "@ionic/prettier-config": "^1.0.1",
     "@ionic/swiftlint-config": "^1.1.2",
@@ -46,7 +41,6 @@
     "prettier-plugin-java": "~1.0.0",
     "rimraf": "^3.0.2",
     "rollup": "^2.32.0",
-    "swiftlint": "^1.0.1",
     "typescript": "~4.0.3"
   },
   "peerDependencies": {

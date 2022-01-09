@@ -1,6 +1,6 @@
 # @rlaurente/nobe
 
-NOBackEnd - Build a full MVP app without Backend API.
+NOBackEnd - The next level api mocking library for frontend developers. Data persistent mocking api for MVP apps rapid development.
 
 Demo, Docs will be publish soon
 

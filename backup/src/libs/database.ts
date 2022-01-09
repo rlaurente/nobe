@@ -1,22 +1,23 @@
-import { Config } from './config';
+import { Config } from '../config';
 import { Misc } from './misc';
 
 export class Database {
-    private base_dir: string;
+    public fsp: any;
+    public base_dir: string;
 
-    constructor(private repo: any) {
+    constructor() {
         this.base_dir = `${Config.WORKSPACE}/db`;
     }
 
     async autoCreateBase() {
         try {
-            const files = await this.repo.fsp.readdir(this.base_dir);
+            const files = await this.fsp.readdir(this.base_dir);
             if (files) {
                 Misc.log(`db folder exists!`)
             }
         } catch (e) {
             Misc.log(`db folder doesn't exists, skipping...`, e);
-            await this.repo.fsp.mkdir(this.base_dir);
+            await this.fsp.mkdir(this.base_dir);
         }
     }
 
@@ -25,7 +26,7 @@ export class Database {
             await this.autoCreateBase();
             const folder = `${this.base_dir}`;
             const _path = `${folder}/${path}.json`;
-            const file = await this.repo.fsp.readFile(_path);
+            const file = await this.fsp.readFile(_path);
             const data = String.fromCharCode.apply(null, file);
             return JSON.parse(data);
         } catch (e) {
@@ -38,7 +39,7 @@ export class Database {
         const folder = `${this.base_dir}`;
         await this.autoCreateBase();
         try {
-            await this.repo.fsp.mkdir(folder, { recursive: true });
+            await this.fsp.mkdir(folder, { recursive: true });
         } catch (e) {
             Misc.log(`db folder exists, skipping...`);
         }
@@ -49,7 +50,7 @@ export class Database {
                 data = JSON.stringify(data);
             }
             Misc.log(`saving to ${_path}...`)
-            await this.repo.fsp.writeFile(_path, data);
+            await this.fsp.writeFile(_path, data);
             is_success = true;
         } catch (e) {
             Misc.log(`Nobe.set failed`, e);

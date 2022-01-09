@@ -1,4 +1,4 @@
-import { Config } from './config';
+import { Config } from '../config';
 import http from 'isomorphic-git/http/web'
 import git from 'isomorphic-git'
 import LightningFS from '@isomorphic-git/lightning-fs'
