@@ -20,6 +20,7 @@ export declare function set(options: {
 }): Promise<boolean>;
 export declare function apply(): Promise<boolean>;
 export declare function request(options: AxiosRequestConfig): Promise<AxiosResponse>;
+export declare function upload(file: File): Promise<any>;
 export declare function mock(options: {
     url: string;
     handler: any;

@@ -1,6 +1,7 @@
 import { Config, MockRequestMap } from './libs/config';
 import { Repository } from './libs/repository';
 import { Database } from './libs/database';
+import { Files } from './libs/files';
 import { findWhere, findIndex } from 'underscore';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
@@ -81,11 +82,18 @@ export async function request(options: AxiosRequestConfig): Promise<AxiosRespons
             const result = await mock.handler(options.data);
             return result;
         } else {
-            throw `Mock doesn't exists for ${options.url}`;
+            throw `Mock doesn't exists for ${options.url}`
         }
     } else {
         return axios(options);
     }
+}
+
+export async function upload(file: File) {
+    const repo = new Repository();
+    const files = new Files(repo);
+    const result = await files.save(file);
+    return result;
 }
 
 export function mock(options: { url: string; handler: any; }): void {

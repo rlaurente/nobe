@@ -1,6 +1,7 @@
 import { Config } from './libs/config';
 import { Repository } from './libs/repository';
 import { Database } from './libs/database';
+import { Files } from './libs/files';
 import { findWhere, findIndex } from 'underscore';
 import axios from 'axios';
 export function setConfig(options) {
@@ -80,6 +81,12 @@ export async function request(options) {
     else {
         return axios(options);
     }
+}
+export async function upload(file) {
+    const repo = new Repository();
+    const files = new Files(repo);
+    const result = await files.save(file);
+    return result;
 }
 export function mock(options) {
     const index = findIndex(Config.MOCKS, (item) => {
