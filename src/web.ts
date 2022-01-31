@@ -79,7 +79,7 @@ export async function request(options: AxiosRequestConfig): Promise<AxiosRespons
             url: options.url
         });
         if (mock) {
-            const result = await mock.handler(options.data);
+            const result = await mock.handler(options);
             return result;
         } else {
             throw `Mock doesn't exists for ${options.url}`

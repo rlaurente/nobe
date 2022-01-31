@@ -71,7 +71,7 @@ export async function request(options) {
             url: options.url
         });
         if (mock) {
-            const result = await mock.handler(options.data);
+            const result = await mock.handler(options);
             return result;
         }
         else {
