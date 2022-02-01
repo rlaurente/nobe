@@ -32,7 +32,7 @@ export class Files {
             await this.repo.fsp.writeFile(path, new Uint8Array(data));
             return {
                 filename: filename,
-                data: this.fileToBase64(file)
+                data: await this.fileToBase64(file)
             };
         } catch (e) {
             Misc.log(`upload failed`, e);
