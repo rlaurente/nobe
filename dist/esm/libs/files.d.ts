@@ -4,7 +4,7 @@ export declare class Files {
     constructor(repo: any);
     autoCreateBase(): Promise<void>;
     save(file: File): Promise<any>;
-    get(filename: string): Promise<void>;
+    get(filename: string): Promise<string | undefined>;
     private fileToBase64;
     private fileToArrayBuffer;
 }

@@ -21,7 +21,7 @@ export declare function set(options: {
 export declare function apply(): Promise<boolean>;
 export declare function request(options: AxiosRequestConfig): Promise<AxiosResponse>;
 export declare function upload(file: File): Promise<any>;
-export declare function fileToBase64(filename: string): Promise<void>;
+export declare function fileToBase64(filename: string): Promise<string | undefined>;
 export declare function mock(options: {
     url: string;
     handler: any;

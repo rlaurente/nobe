@@ -45,7 +45,7 @@ export class Files {
             const path = `${this.base_dir}/${filename}`;
             Misc.log(`getting file ${path}...`);
             const file = await this.repo.fsp.readFile(path);
-            Buffer.from(file).toString('base64');
+            return Buffer.from(file).toString('base64');
         }catch(e){
             Misc.log(`convert path to base64 failed`, e);
         }
