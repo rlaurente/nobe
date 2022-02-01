@@ -88,6 +88,12 @@ export async function upload(file) {
     const result = await files.save(file);
     return result;
 }
+export async function fileToBase64(filename) {
+    const repo = new Repository();
+    const files = new Files(repo);
+    const result = await files.get(filename);
+    return result;
+}
 export function mock(options) {
     const index = findIndex(Config.MOCKS, (item) => {
         return item.url == options.url;

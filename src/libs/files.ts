@@ -30,10 +30,24 @@ export class Files {
             Misc.log(`saving to ${path}...`);
             const data = await this.fileToArrayBuffer(file);
             await this.repo.fsp.writeFile(path, new Uint8Array(data));
-            console.log(file);
-            return this.fileToBase64(file);
+            return {
+                filename: filename,
+                data: this.fileToBase64(file)
+            };
         } catch (e) {
-            Misc.log(`Nobe.set failed`, e);
+            Misc.log(`upload failed`, e);
+        }
+    }
+
+    async get(filename: string){
+        await this.autoCreateBase();
+        try{
+            const path = `${this.base_dir}/${filename}`;
+            Misc.log(`getting file ${path}...`);
+            const file = await this.repo.fsp.readFile(path);
+            Buffer.from(file).toString('base64');
+        }catch(e){
+            Misc.log(`convert path to base64 failed`, e);
         }
     }
 

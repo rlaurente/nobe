@@ -96,6 +96,13 @@ export async function upload(file: File) {
     return result;
 }
 
+export async function fileToBase64(filename: string) {
+    const repo = new Repository();
+    const files = new Files(repo);
+    const result = await files.get(filename);
+    return result;
+}
+
 export function mock(options: { url: string; handler: any; }): void {
     const index = findIndex(Config.MOCKS, (item: MockRequestMap) => {
         return item.url == options.url;
