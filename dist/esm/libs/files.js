@@ -27,9 +27,10 @@ export class Files {
             const data = await this.fileToArrayBuffer(file);
             const _data = new Uint8Array(data);
             await this.repo.fsp.writeFile(path, _data);
+            const blob_data = new Blob([new Uint8Array(_data, _data.byteOffset, _data.length)]);
             return {
                 filename: filename,
-                data: _data
+                data: URL.createObjectURL(blob_data)
             };
         }
         catch (e) {
@@ -42,7 +43,8 @@ export class Files {
             const path = `${this.base_dir}/${filename}`;
             Misc.log(`getting file ${path}...`);
             const data = await this.repo.fsp.readFile(path);
-            return data;
+            const blob_data = new Blob([new Uint8Array(data, data.byteOffset, data.length)]);
+            return URL.createObjectURL(blob_data);
         }
         catch (e) {
             Misc.log(`convert path to base64 failed`, e);
