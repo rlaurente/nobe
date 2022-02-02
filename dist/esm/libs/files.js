@@ -40,8 +40,9 @@ export class Files {
         try {
             const path = `${this.base_dir}/${filename}`;
             Misc.log(`getting file ${path}...`);
-            const file = await this.repo.fsp.readFile(path);
-            return Buffer.from(file).toString('base64');
+            const raw_file = await this.repo.fsp.readFile(path);
+            const file = await this.fileToArrayBuffer(raw_file);
+            return URL.createObjectURL(file);
         }
         catch (e) {
             Misc.log(`convert path to base64 failed`, e);
