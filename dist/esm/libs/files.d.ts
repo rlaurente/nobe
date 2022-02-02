@@ -4,6 +4,6 @@ export declare class Files {
     constructor(repo: any);
     autoCreateBase(): Promise<void>;
     save(file: File): Promise<any>;
-    get(filename: string): Promise<string | undefined>;
+    get(filename: string): Promise<any>;
     private fileToArrayBuffer;
 }

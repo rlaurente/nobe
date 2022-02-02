@@ -88,7 +88,7 @@ export async function upload(file) {
     const result = await files.save(file);
     return result;
 }
-export async function fileToBase64(filename) {
+export async function getUploadedFile(filename) {
     const repo = new Repository();
     const files = new Files(repo);
     const result = await files.get(filename);

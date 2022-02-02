@@ -29,10 +29,11 @@ export class Files {
             const path = `${this.base_dir}/${filename}`;
             Misc.log(`saving to ${path}...`);
             const data = await this.fileToArrayBuffer(file);
-            await this.repo.fsp.writeFile(path, new Uint8Array(data));
+            const _data  = new Uint8Array(data);
+            await this.repo.fsp.writeFile(path, _data);
             return {
                 filename: filename,
-                data: await URL.createObjectURL(data)
+                data: _data
             };
         } catch (e) {
             Misc.log(`upload failed`, e);
@@ -44,9 +45,8 @@ export class Files {
         try{
             const path = `${this.base_dir}/${filename}`;
             Misc.log(`getting file ${path}...`);
-            const raw_file = await this.repo.fsp.readFile(path);
-            console.log(raw_file, 'raw_file');
-            return URL.createObjectURL(raw_file)
+            const data = await this.repo.fsp.readFile(path);
+            return data;
         }catch(e){
             Misc.log(`convert path to base64 failed`, e);
         }
