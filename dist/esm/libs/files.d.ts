@@ -5,6 +5,5 @@ export declare class Files {
     autoCreateBase(): Promise<void>;
     save(file: File): Promise<any>;
     get(filename: string): Promise<string | undefined>;
-    private fileToBase64;
     private fileToArrayBuffer;
 }

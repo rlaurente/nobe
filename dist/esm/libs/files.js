@@ -28,7 +28,7 @@ export class Files {
             await this.repo.fsp.writeFile(path, new Uint8Array(data));
             return {
                 filename: filename,
-                data: await this.fileToBase64(file)
+                data: await URL.createObjectURL(data)
             };
         }
         catch (e) {
@@ -41,20 +41,11 @@ export class Files {
             const path = `${this.base_dir}/${filename}`;
             Misc.log(`getting file ${path}...`);
             const raw_file = await this.repo.fsp.readFile(path);
-            const file = await this.fileToArrayBuffer(raw_file);
-            return URL.createObjectURL(file);
+            return URL.createObjectURL(raw_file);
         }
         catch (e) {
             Misc.log(`convert path to base64 failed`, e);
         }
-    }
-    fileToBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-        });
     }
     fileToArrayBuffer(file) {
         file.arrayBuffer;
