@@ -1,6 +1,12 @@
+import { TransformRequest } from "..";
 export interface MockRequestMap {
     url: string;
     handler: any;
+}
+export interface TransformerMap {
+    url: string;
+    onRequest: TransformRequest;
+    onResponse: any;
 }
 export declare class Config {
     static GIT_URL: string;
@@ -10,4 +16,5 @@ export declare class Config {
     static MOCKS: MockRequestMap[];
     static API_URL: string;
     static IS_MOCK: boolean;
+    static TRANSFORMERS: TransformerMap[];
 }

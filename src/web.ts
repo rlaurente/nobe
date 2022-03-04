@@ -1,9 +1,13 @@
-import { Config, MockRequestMap } from './libs/config';
+import { Config, MockRequestMap, TransformerMap } from './libs/config';
 import { Repository } from './libs/repository';
 import { Database } from './libs/database';
 import { Files } from './libs/files';
 import { findWhere, findIndex } from 'underscore';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+
+export interface TransformRequest {
+    (options: AxiosRequestConfig): AxiosRequestConfig;
+}
 
 export function setConfig(options: { is_mock: boolean; is_debug: boolean; }): void {
     Config.IS_DEBUG = options.is_debug;
@@ -85,7 +89,24 @@ export async function request(options: AxiosRequestConfig): Promise<AxiosRespons
             throw `Mock doesn't exists for ${options.url}`
         }
     } else {
-        return axios(options);
+        let _options = {
+            ...options
+        };
+        const response_transformer = findWhere(Config.TRANSFORMERS, {
+            url: options.url
+        });
+
+        //  apply request
+        if(response_transformer){
+            _options = response_transformer.onRequest(_options);
+        }
+        let response = await axios(_options);
+
+        //  apply response
+        if(response_transformer){
+            response = response_transformer.onResponse(response.data);
+        }
+        return response;
     }
 }
 
@@ -111,5 +132,16 @@ export function mock(options: { url: string; handler: any; }): void {
         Config.MOCKS[index] = options;
     } else {
         Config.MOCKS.push(options);
+    }
+}
+
+export function transform(options: { url: string, onRequest: TransformRequest, onResponse: any }): void {
+    const index = findIndex(Config.TRANSFORMERS, (item: TransformerMap) => {
+        return item.url == options.url;
+    });
+    if (index > -1) {
+        Config.TRANSFORMERS[index] = options;
+    } else {
+        Config.TRANSFORMERS.push(options);
     }
 }

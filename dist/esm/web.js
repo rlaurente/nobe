@@ -79,7 +79,20 @@ export async function request(options) {
         }
     }
     else {
-        return axios(options);
+        let _options = Object.assign({}, options);
+        const response_transformer = findWhere(Config.TRANSFORMERS, {
+            url: options.url
+        });
+        //  apply request
+        if (response_transformer) {
+            _options = response_transformer.onRequest(_options);
+        }
+        let response = await axios(_options);
+        //  apply response
+        if (response_transformer) {
+            response = response_transformer.onResponse(response.data);
+        }
+        return response;
     }
 }
 export async function upload(file) {
@@ -103,6 +116,17 @@ export function mock(options) {
     }
     else {
         Config.MOCKS.push(options);
+    }
+}
+export function transform(options) {
+    const index = findIndex(Config.TRANSFORMERS, (item) => {
+        return item.url == options.url;
+    });
+    if (index > -1) {
+        Config.TRANSFORMERS[index] = options;
+    }
+    else {
+        Config.TRANSFORMERS.push(options);
     }
 }
 //# sourceMappingURL=web.js.map

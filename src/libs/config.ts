@@ -1,6 +1,14 @@
+import { TransformRequest } from "..";
+
 export interface MockRequestMap {
     url: string,
     handler: any
+};
+
+export interface TransformerMap {
+    url: string,
+    onRequest: TransformRequest,
+    onResponse: any
 };
 
 export class Config {
@@ -11,4 +19,5 @@ export class Config {
     public static MOCKS: MockRequestMap[] = [];
     public static API_URL: string = '';
     public static IS_MOCK: boolean = true;
+    public static TRANSFORMERS: TransformerMap[] = [];
 }

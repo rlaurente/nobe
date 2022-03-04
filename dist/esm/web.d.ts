@@ -1,4 +1,7 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
+export interface TransformRequest {
+    (options: AxiosRequestConfig): AxiosRequestConfig;
+}
 export declare function setConfig(options: {
     is_mock: boolean;
     is_debug: boolean;
@@ -25,4 +28,9 @@ export declare function getUploadedFile(filename: string): Promise<string | unde
 export declare function mock(options: {
     url: string;
     handler: any;
+}): void;
+export declare function transform(options: {
+    url: string;
+    onRequest: TransformRequest;
+    onResponse: any;
 }): void;

@@ -1,4 +1,5 @@
 ;
+;
 export class Config {
 }
 Config.GIT_URL = '';
@@ -8,4 +9,5 @@ Config.IS_DEBUG = true;
 Config.MOCKS = [];
 Config.API_URL = '';
 Config.IS_MOCK = true;
+Config.TRANSFORMERS = [];
 //# sourceMappingURL=config.js.map
