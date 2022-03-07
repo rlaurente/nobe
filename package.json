@@ -1,6 +1,6 @@
 {
   "name": "@rlaurente/nobe",
-  "version": "0.0.23-beta",
+  "version": "0.0.24-beta",
   "description": "NOBackEnd - The next level api mocking library for frontend developers. Data persistent mocking api for MVP apps rapid development.",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",

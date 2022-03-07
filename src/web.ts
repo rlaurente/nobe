@@ -5,10 +5,6 @@ import { Files } from './libs/files';
 import { findWhere, findIndex } from 'underscore';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
-export interface TransformRequest {
-    (options: AxiosRequestConfig): AxiosRequestConfig;
-}
-
 export function setConfig(options: { is_mock: boolean; is_debug: boolean; }): void {
     Config.IS_DEBUG = options.is_debug;
     Config.IS_MOCK = options.is_mock;
@@ -97,13 +93,13 @@ export async function request(options: AxiosRequestConfig): Promise<AxiosRespons
         });
 
         //  apply request
-        if(response_transformer){
+        if(response_transformer && response_transformer.onRequest){
             _options = response_transformer.onRequest(_options);
         }
         let response = await axios(_options);
 
         //  apply response
-        if(response_transformer){
+        if(response_transformer && response_transformer.onResponse){
             response = response_transformer.onResponse(response.data);
         }
         return response;
@@ -135,7 +131,7 @@ export function mock(options: { url: string; handler: any; }): void {
     }
 }
 
-export function transform(options: { url: string, onRequest: TransformRequest, onResponse: any }): void {
+export function transform(options: { url: string, onRequest?: any, onResponse?: any }): void {
     const index = findIndex(Config.TRANSFORMERS, (item: TransformerMap) => {
         return item.url == options.url;
     });

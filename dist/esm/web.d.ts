@@ -1,7 +1,4 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
-export interface TransformRequest {
-    (options: AxiosRequestConfig): AxiosRequestConfig;
-}
 export declare function setConfig(options: {
     is_mock: boolean;
     is_debug: boolean;
@@ -31,6 +28,6 @@ export declare function mock(options: {
 }): void;
 export declare function transform(options: {
     url: string;
-    onRequest: TransformRequest;
-    onResponse: any;
+    onRequest?: any;
+    onResponse?: any;
 }): void;

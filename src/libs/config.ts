@@ -1,5 +1,3 @@
-import { TransformRequest } from "..";
-
 export interface MockRequestMap {
     url: string,
     handler: any
@@ -7,8 +5,8 @@ export interface MockRequestMap {
 
 export interface TransformerMap {
     url: string,
-    onRequest: TransformRequest,
-    onResponse: any
+    onRequest?: any,
+    onResponse?: any
 };
 
 export class Config {

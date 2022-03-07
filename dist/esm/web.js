@@ -84,12 +84,12 @@ export async function request(options) {
             url: options.url
         });
         //  apply request
-        if (response_transformer) {
+        if (response_transformer && response_transformer.onRequest) {
             _options = response_transformer.onRequest(_options);
         }
         let response = await axios(_options);
         //  apply response
-        if (response_transformer) {
+        if (response_transformer && response_transformer.onResponse) {
             response = response_transformer.onResponse(response.data);
         }
         return response;
