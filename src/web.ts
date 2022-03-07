@@ -100,7 +100,11 @@ export async function request(options: AxiosRequestConfig): Promise<AxiosRespons
 
         //  apply response
         if(response_transformer && response_transformer.onResponse){
-            response = response_transformer.onResponse(response.data);
+            const data = response_transformer.onResponse(response.data);
+            response = {
+                ...response,
+                data: data
+            }
         }
         return response;
     }

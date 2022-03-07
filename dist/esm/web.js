@@ -90,7 +90,8 @@ export async function request(options) {
         let response = await axios(_options);
         //  apply response
         if (response_transformer && response_transformer.onResponse) {
-            response = response_transformer.onResponse(response.data);
+            const data = response_transformer.onResponse(response.data);
+            response = Object.assign(Object.assign({}, response), { data: data });
         }
         return response;
     }
